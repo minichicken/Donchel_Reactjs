@@ -5,7 +5,8 @@ class TodoList extends React.Component {
     render() {
         return (
             <div>
-                {this.props.todoItem.title}
+                <input type="checkbox" checked={this.props.completed}/>
+                {this.props.title}
                 <button>Delete</button>
             </div>
         );

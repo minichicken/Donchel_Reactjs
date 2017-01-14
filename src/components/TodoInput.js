@@ -6,29 +6,35 @@ class TodoInput extends React.Component {
         super(props);
         this.state = {
             todo: [
-                {title: "item1"},
-                {title: "item2"},
-                {title: "item3"}
+                {title: "코딩 하기", completed: true},
+                {title: "운동 하기", completed: false},
+                {title: "밥먹기", completed: true}
             ]
         }
 
+        this.addHandleClick = this.addHandleClick.bind(this);
+        
     }
     // this.addHandleClick = this.addHandleClick.bind(this);
     // addHandleClick() {
     // }
+    addHandleClick() {
+
+    }
 
     render() {
-        const TodoListMap = (todo) => {
+        const todoListMap = (todo) => {
             return todo.map((todoItem, i) => {
-                return (<TodoList todoItem={todoItem} key={i}/>);
+                return (<TodoList title={todoItem.title} completed={todoItem.completed} key={i}/>);
             })
         }
+        
         return (
             <div>
-                <input type="text"/>
+                <input type="text" />
                 <button onClick="">Add</button>
                  <div>
-                    {TodoListMap(this.state.todo)}
+                    {todoListMap(this.state.todo)}
                 </div>
             </div>
         );
