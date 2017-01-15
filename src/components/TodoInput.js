@@ -1,41 +1,50 @@
 import React from 'react';
 import TodoList from './TodoList';
+import AutoComplete from 'material-ui/AutoComplete';
 
 class TodoInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            todo: [
-                {title: "코딩 하기", completed: true},
-                {title: "운동 하기", completed: false},
-                {title: "밥먹기", completed: true}
-            ]
+            title: []
         }
 
-        this.addHandleClick = this.addHandleClick.bind(this);
-        
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    // this.addHandleClick = this.addHandleClick.bind(this);
-    // addHandleClick() {
-    // }
-    addHandleClick() {
 
+    handleTitleChange(value) {
+        this.setState({
+            title: [
+                value
+            ],
+        })
+        console.log(this.state.title[0] )
     }
+
+    handleSubmit(e) {
+        const newTodoItem = {
+            title: this.state.title[0],
+            completed : false
+        }
+        // 부모 컴포넌트에서 받은 프롭스 메소드를 사용.
+        this.props.todoInsert(newTodoItem);
+        // insert 후 
+        this.setState({
+            title: []
+        });
+    }
+
 
     render() {
-        const todoListMap = (todo) => {
-            return todo.map((todoItem, i) => {
-                return (<TodoList title={todoItem.title} completed={todoItem.completed} key={i}/>);
-            })
-        }
-        
         return (
-            <div>
-                <input type="text" />
-                <button onClick="">Add</button>
-                 <div>
-                    {todoListMap(this.state.todo)}
-                </div>
+            <div>   
+                    <AutoComplete
+                        hintText="Please input Title..."
+                        dataSource={this.state.title}
+                        onUpdateInput={this.handleTitleChange}
+                    />
+                    <button type="button" onClick={this.handleSubmit}>Add</button>
             </div>
         );
     }
