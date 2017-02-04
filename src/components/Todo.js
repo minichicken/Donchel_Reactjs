@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { insert } from '../actions';
+
 import TodoInput from './TodoInput';
 import TodoList from './TodoList';
 import update from 'react-addons-update';
@@ -8,83 +11,38 @@ import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 
 class Todo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            todo: [
-                {title: "코딩 하기", completed: true},
-                {title: "운동 하기", completed: false},
-                {title: "밥먹기", completed: true}
-            ]
-        }
-
-        this.handleTodoInsert = this.handleTodoInsert.bind(this);     
-        this.handleTodoRemove = this.handleTodoRemove.bind(this);  
-        this.handleTodoCheck = this.handleTodoCheck.bind(this);
-    }
-
-    handleTodoInsert(newTodoItem) {
-        this.setState({
-            todo : update(
-                this.state.todo,
-                {
-                    $push: [newTodoItem]
-                }
-            )
-        });
-    } 
-
-    handleTodoRemove(index) {
-        this.setState({
-            todo : update(
-                this.state.todo,
-                {
-                    $splice: [[index, 1]]
-                }
-            )
-        });
-    }
-
-    handleTodoCheck(index) {
-        this.setState({
-            todo : update(
-                this.state.todo,
-                {
-                    [index] : {
-                        completed: {$set : !this.state.todo[index].completed}
-                    }
-                }
-            )
-        });
-        
-    }
     render() {
         const todoListMap = (todo) => {
             return todo.map((todoItem, i) => {
+                console.log(todoItem)
                 return (
-                        <TodoList title={todoItem.title} 
-                                completed={todoItem.completed} 
-                                key={i}
-                                number={i}
-                                todoRemove={this.handleTodoRemove}
-                                todoCheck={this.handleTodoCheck}/>
+                        <TodoList
+                            title={todoItem.title}
+                            completed={todoItem.completed}
+                            key={i}
+                            number={i}
+                        />
                 );
             })
         }
-
         return (
             <div>
                 { /* todo input component */ }
-                <TodoInput todoInsert={this.handleTodoInsert}/>
-                
+                <TodoInput/>
                 { /* todo list component */ }
-                <List>
-                    {todoListMap(this.state.todo)}
-                </List>
-                
+                {todoListMap(this.props.listData)}                
             </div>
         );
     }
 }
+
+let mapStateToProps = (state) => {
+    console.log(state.list.todo)
+    return {
+        listData: state.list.todo
+    }
+}
+
+Todo = connect(mapStateToProps)(Todo);
 
 export default Todo;

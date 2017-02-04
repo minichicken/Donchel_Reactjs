@@ -1,0 +1,94 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import App from './components/App';
+import counterApp from './reducers';
+
+const store = createStore(counterApp);
+const rootElement = document.getElementById('root');
+
+ReactDOM.render(
+    <Provider store={ store }>
+        <App />
+    </Provider>,
+    rootElement
+)
+
+// 이 밑은 ㄴㄴ 
+
+/*
+*   Action
+*/
+const INCREMENT = 'INCREMENT';
+
+function increase(diff) {
+    return {
+        type: INCREMENT,
+        addBy: diff
+    };
+}
+
+/*
+*   Reducer
+*/
+const initialState = {
+    value : 0
+};
+
+const counterReducer = (state = initialState, action) => {
+    switch(action.type) {
+        case INCREMENT:
+            // state를 직접적으로 바꾸면 문제가 되기 때문에 
+            // Object.assign로 객체를? 복사하여 갱신시키는 방식
+            return Object.assign({}, state, {
+                value: state.value + action.addBy
+            });
+        default:
+        return state;
+    }
+};
+
+/*
+*   Store
+*/
+const store = createStore(counterReducer);
+
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick() {
+        this.props.store.dispatch(increase(1));
+    }
+
+    render() {
+        let centerStyle = {
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            WebkitUserSelect: 'none',
+            MozUserSelect: 'none',
+            MsUserSelect:'none',
+            userSelect: 'none',
+            cursor: 'pointer'
+        };
+        return (
+            <div onClick={ this.onClick } style={ centerStyle } >
+                <h1> {this.props.store.getState().value} </h1>
+            </div>
+        )
+    }
+}
+
+const render = () => {
+
+    const rootElement = document.getElementById('root');
+    ReactDOM.render( <App store={store}/>, rootElement );
+};
+
+store.subscribe(render);
+render();

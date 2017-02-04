@@ -1,41 +1,87 @@
-import { INCREMENT, DECREMENT, SET_DIFF } from '../actions';
+import { INSERT, REMOVE, MODIFY, CHECKED, SET_TITLE } from '../actions';
+
 import { combineReducers } from 'redux';
 
-const counterInitialState = {
-    value: 0,
-    diff: 1
+const listInitialState = {
+    todo: [
+        {title: "코딩 하기", completed: true},
+        {title: "운동 하기", completed: true},
+        {title: "밥먹기", completed: false}
+    ],
+    title: '',
+    onChange: (index) => {
+        return 
+    }
 };
 
-const counter = (state = counterInitialState, action) => {
+
+const list = (state = listInitialState, action) => {
+
+    // 추가 메소드 정의
+    let insertItem = (todos, item) => {
+        return todos.concat(item)
+    }
+
+    // 삭제 메소드 정의
+    let removeItem = (todos, index) => {
+        return todos
+            .slice(0,index)
+            .concat(todos.slice(index+1))
+    }
+
+    // 수정 메소드 정의
+    let modifyItem = (todos, action) => {
+            return todos.map((item, currentIndex) => {
+                if(currentIndex == action.itemIndex) item.title = action.itemTitle
+                return item
+        });
+    }
+
+    // 체크 메소드 정의
+    let chekedItem = (todos, itemIndex) => {
+        // 비동기 문제,,?
+        // todos[index].completed = !todos[index].completed 
+        
+        // 밑으로 해결?
+        return todos.map((item, currentIndex) => {
+            if(currentIndex == itemIndex) item.completed = true
+            return item
+        });
+    }
+
     switch(action.type) {
-        case INCREMENT:
+        case INSERT:
+            console.log(state.title);
+            const newTodoItem = {
+                title: state.title,
+                completed: false
+            }
             return Object.assign({}, state, {
-                value : state.value + state.diff
+                todo: insertItem(state.todo, newTodoItem)
             });
-        case DECREMENT:
+        case REMOVE:
             return Object.assign({}, state, {
-                value : state.value - state.diff
+                todo: removeItem(state.todo, action.itemIndex)
             });
-        case SET_DIFF:
+        case MODIFY:
             return Object.assign({}, state, {
-                diff: action.diff
+                todo: modifyItem(state.todo, action)
             });
-        default:
+        case CHECKED:
+            return Object.assign({}, state, {
+                todo: chekedItem(state.todo, action.itemIndex)
+            });
+        case SET_TITLE:
+            return Object.assign({}, state, {
+                title: action.title
+            });
+        default: 
             return state;
     }
 };
 
-const extra = (state = { value: 'this_is_extra_reducer' }, action) => {
-    switch(action.type) {
-        default:
-            return state;
-    }
-};
-
-// combineReducers -> 여러개의 reducer를 한개로 합칠때 사용됨
-const counterApp = combineReducers({
-    counter,
-    extra
+const todoApp = combineReducers({
+    list
 });
 
-export default counterApp;
+export default todoApp;

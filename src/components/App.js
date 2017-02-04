@@ -1,28 +1,29 @@
 import React from 'react';
-// import Todo from './Todo';
-import Counter from './Counter';
-import Buttons from './Buttons';
-import Option from './Option';
+import Todo from './Todo';
+// import Counter from './Counter';
+// import Buttons from './Buttons';
+// import Option from './Option';
 
-// import MuithemeProvider from 'material-ui/styles/MuithemeProvider';
-// import injectTapEventPlugin from 'react-tap-event-plugin';
+import MuithemeProvider from 'material-ui/styles/MuithemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-// injectTapEventPlugin();
+injectTapEventPlugin();
 
 // 기존 Todo 
-/*class App extends React.Component {
+class App extends React.Component {
     render() {
         return (
             <MuithemeProvider>
                 <Todo/>
             </MuithemeProvider>
-            
         );
     }
-}*/
-class App extends React.Component {
+}
+
+
+/*class App extends React.Component {
     render(){
         return (
             <div style={ {textAlign: 'center'} }>
@@ -32,7 +33,6 @@ class App extends React.Component {
             </div>
         );
     }
- 
-}
- 
+}*/
+
 export default App;

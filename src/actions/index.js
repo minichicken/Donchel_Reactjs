@@ -1,22 +1,40 @@
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
-export const SET_DIFF = 'SET_DIFF';
+export const INSERT = 'INSERT';
+export const REMOVE = 'REMOVE';
+export const CHECKED = 'CHECKED';
+export const MODIFY = 'MODIFY';
+export const SET_TITLE = 'SET_TITLE';
 
-export function increment() {
+export function insert() {
     return {
-        type: INCREMENT
-    };
+        type: INSERT
+    }
 }
 
-export function decrement() {
+export function remove(index) {
     return {
-        type: DECREMENT
-    };
+        type: REMOVE,
+        itemIndex: index
+    }
 }
 
-export function setDiff(value) {
+export function checked(index) {
     return {
-        type: SET_DIFF,
-        diff: value
-    };
+        type: CHECKED,
+        itemIndex: index
+    }
+}
+
+export function modify(title, index) {
+    return {
+        type: MODIFY,
+        itemTitle: title,
+        itemIndex: index
+    }
+}
+
+export function setTitle(value) {
+    return {
+        type: SET_TITLE,
+        title: value
+    }
 }
