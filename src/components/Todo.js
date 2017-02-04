@@ -76,6 +76,7 @@ class Todo extends React.Component {
             <div>
                 { /* todo input component */ }
                 <TodoInput todoInsert={this.handleTodoInsert}/>
+                
                 { /* todo list component */ }
                 <List>
                     {todoListMap(this.state.todo)}
